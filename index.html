@@ -164,7 +164,7 @@
 
   .kpi-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 16px;
     margin: 24px 0;
   }
@@ -394,164 +394,6 @@
     transition: width 0.3s;
   }
 
-  /* Offer Comparison */
-  .comparison-divider {
-    margin: 48px 0 32px;
-    padding: 20px 0;
-    border-top: 2px solid var(--accent);
-    text-align: center;
-  }
-
-  .comparison-divider h2 {
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 4px;
-  }
-
-  .comparison-divider p {
-    color: var(--text-muted);
-    font-size: 13px;
-  }
-
-  .offer-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-
-  .offer-header .offer-num {
-    font-size: 11px;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 4px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .offer-1-badge { background: var(--accent); color: #fff; }
-  .offer-2-badge { background: var(--yellow); color: #000; }
-
-  .offer-header h3 {
-    font-size: 14px;
-    font-weight: 600;
-  }
-
-  .vs-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-  }
-
-  .vs-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 6px 0;
-    font-size: 13px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .vs-row:last-child { border-bottom: none; }
-
-  .vs-row .vs-label { color: var(--text-muted); }
-  .vs-row .vs-val { font-weight: 600; font-variant-numeric: tabular-nums; }
-
-  .breakeven-card {
-    background: linear-gradient(135deg, rgba(108,92,231,0.1), rgba(0,184,148,0.1));
-    border: 1px solid var(--accent);
-    border-radius: 12px;
-    padding: 24px;
-    text-align: center;
-    margin: 20px 0;
-  }
-
-  .breakeven-card .breakeven-label {
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-  }
-
-  .breakeven-card .breakeven-val {
-    font-size: 32px;
-    font-weight: 800;
-    color: var(--accent-light);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .breakeven-card .breakeven-sub {
-    font-size: 12px;
-    color: var(--text-muted);
-    margin-top: 6px;
-  }
-
-  .winner-tag {
-    display: inline-block;
-    font-size: 11px;
-    padding: 3px 10px;
-    border-radius: 4px;
-    font-weight: 700;
-    letter-spacing: 0.3px;
-  }
-
-  .winner-1 { background: rgba(108,92,231,0.15); color: var(--accent-light); }
-  .winner-2 { background: var(--yellow-bg); color: var(--yellow); }
-
-  .pv-table td.pv-positive { color: var(--green); }
-  .pv-table td.pv-negative { color: var(--red); }
-  .pv-table td.pv-winner-1 { background: rgba(108,92,231,0.08); }
-  .pv-table td.pv-winner-2 { background: rgba(253,203,110,0.08); }
-
-  .pv-table tfoot td {
-    font-weight: 700;
-    border-top: 2px solid var(--border);
-    font-size: 14px;
-  }
-
-  /* Offer Comparison Table */
-  .offer-compare-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .offer-compare-table thead th {
-    background: var(--surface2);
-    padding: 14px 18px;
-    font-size: 13px;
-    font-weight: 700;
-    white-space: nowrap;
-  }
-
-  .offer-compare-table tbody td {
-    padding: 10px 18px;
-    border-top: 1px solid var(--border);
-    text-align: right;
-    font-size: 13px;
-  }
-
-  .offer-compare-table tbody td:first-child {
-    text-align: left;
-    color: var(--text-muted);
-    font-weight: 500;
-    background: var(--surface);
-  }
-
-  .offer-compare-table tbody tr:hover td {
-    background: var(--surface2);
-  }
-
-  .offer-compare-table tbody tr:hover td:first-child {
-    background: var(--surface2);
-  }
-
-  .offer-compare-table tr.offer-compare-divider td {
-    border-top: 2px solid var(--border);
-  }
-
   /* Probability Table */
   .prob-table {
     font-size: 12px;
@@ -659,7 +501,7 @@
 
   @media (max-width: 900px) {
     .grid-2, .grid-3 { grid-template-columns: 1fr; }
-    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .kpi-grid { grid-template-columns: repeat(3, 1fr); }
   }
 </style>
 </head>
@@ -821,6 +663,16 @@
       <div class="number" id="kpiOwnership">&mdash;</div>
       <div class="sub" id="kpiOwnershipSub">&mdash;</div>
     </div>
+    <div class="kpi">
+      <div class="label">Avg Annual Comp</div>
+      <div class="number positive" id="kpiAvgAnnual">&mdash;</div>
+      <div class="sub" id="kpiAvgAnnualSub">Cash + equity / 4 years</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Total 4-Year Comp</div>
+      <div class="number positive" id="kpiTotal4yr">&mdash;</div>
+      <div class="sub" id="kpiTotal4yrSub">Cash + net equity value</div>
+    </div>
   </div>
 
   <!-- Dilution Waterfall -->
@@ -863,96 +715,6 @@
     &bull; This is not financial or tax advice. AMT, capital gains, and liquidity preferences are not modeled.
   </div>
 
-  <!-- ============================================================ -->
-  <!-- OFFER COMPARISON SECTION -->
-  <!-- ============================================================ -->
-  <div class="comparison-divider">
-    <h2>Offer Comparison: Startup Equity vs. Known Value</h2>
-  </div>
-
-  <div class="card" style="padding:0;overflow:hidden;">
-    <table class="offer-compare-table">
-      <thead>
-        <tr>
-          <th style="text-align:left;border-right:2px solid var(--border);width:28%;"></th>
-          <th style="text-align:right;color:var(--accent-light);width:36%;">
-            <span class="offer-num offer-1-badge" style="margin-right:6px;">Offer 1</span>
-            Startup, Head of Finance
-          </th>
-          <th style="text-align:right;color:var(--yellow);width:36%;">
-            <span class="offer-num offer-2-badge" style="margin-right:6px;">Offer 2</span>
-            PE CFO
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style="border-right:2px solid var(--border);">Cash Compensation</td>
-          <td>$300K / yr</td>
-          <td>$500K / yr</td>
-        </tr>
-        <tr>
-          <td style="border-right:2px solid var(--border);">Annualized Equity Value (Post-Dilution)</td>
-          <td>
-            <span style="color:var(--accent-light);" id="cmpO1EqAt3B">&mdash;</span> <span style="color:var(--text-muted);font-size:11px;">(3&times;)</span>
-            &nbsp;/&nbsp;
-            <span class="positive" id="cmpO1EqAt6B">&mdash;</span> <span style="color:var(--text-muted);font-size:11px;">(6&times;)</span>
-          </td>
-          <td>
-            <span style="color:var(--yellow);">$2.3M</span> <span style="color:var(--text-muted);font-size:11px;">(2&times;)</span>
-            &nbsp;/&nbsp;
-            <span class="positive">$3.4M</span> <span style="color:var(--text-muted);font-size:11px;">(3&times;)</span>
-          </td>
-        </tr>
-        <tr class="offer-compare-divider">
-          <td style="border-right:2px solid var(--border);font-weight:700;">Avg Annual Comp</td>
-          <td style="font-weight:700;">
-            <span style="color:var(--accent-light);" id="cmpO1AvgAt3B">&mdash;</span> <span style="color:var(--text-muted);font-size:11px;">(3&times;)</span>
-            &nbsp;/&nbsp;
-            <span class="positive" id="cmpO1AvgAt6B">&mdash;</span> <span style="color:var(--text-muted);font-size:11px;">(6&times;)</span>
-          </td>
-          <td style="font-weight:700;">
-            <span style="color:var(--yellow);">$2.8M</span> <span style="color:var(--text-muted);font-size:11px;">(2&times;)</span>
-            &nbsp;/&nbsp;
-            <span class="positive">$3.9M</span> <span style="color:var(--text-muted);font-size:11px;">(3&times;)</span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Breakeven -->
-  <div class="grid-2" style="margin-top:20px;">
-    <div class="breakeven-card">
-      <div class="breakeven-label">Breakeven Exit (vs. PE CFO at 2&times; Min)</div>
-      <div class="breakeven-val" id="breakeven2x">&mdash;</div>
-      <div class="breakeven-sub" id="breakeven2xSub">To beat PE CFO minimum scenario</div>
-    </div>
-    <div class="breakeven-card">
-      <div class="breakeven-label">Breakeven Exit (vs. PE CFO at 3&times; Base)</div>
-      <div class="breakeven-val" id="breakeven3x">&mdash;</div>
-      <div class="breakeven-sub" id="breakeven3xSub">To beat PE CFO base case</div>
-    </div>
-  </div>
-
-  <!-- Comparison across exit valuations -->
-  <div class="section-title">Avg Annual Comp: Startup vs. PE CFO by Exit Valuation <span class="badge">Decision Table</span></div>
-  <p style="font-size:12px;color:var(--text-muted);margin-bottom:6px;">
-    Average annual comp (4-year total &divide; 4) across startup exit valuations ($1B&ndash;$10B). Green = Startup favorable. Red = PE CFO favorable.
-  </p>
-  <div class="table-wrapper">
-    <table id="decisionTable" class="pv-table"></table>
-  </div>
-
-  <div class="info-note" style="margin-top:20px;">
-    <strong>Comparison Methodology:</strong><br>
-    &bull; <strong>Cash differential:</strong> PE CFO base comp of $500K vs. Startup at $300K = $200K/yr differential ($800K over 4 years).<br>
-    &bull; <strong>Present value:</strong> All cash flows discounted at 10% annually. Equity assumed to vest/liquidate at Year 4.<br>
-    &bull; <strong>PE CFO equity:</strong> $4.5M net value at vest. Minimum scenario assumes 2&times; ($9M) over 4 years. Base case assumes 3&times; ($13.5M).<br>
-    &bull; <strong>Comparable scenarios:</strong> Startup at a $3B exit and $6B exit shown alongside PE CFO 2&times; and 3&times; scenarios for annual comp comparison.<br>
-    &bull; <strong>Breakeven:</strong> The exit valuation at which the Startup total 4-year PV equals the PE CFO total 4-year PV, expressed as a multiple of the $1.0B pre-money valuation.<br>
-    &bull; This comparison is purely financial. Non-monetary factors (role, growth, risk tolerance, mission) are not modeled.
-  </div>
 
 </div>
 
@@ -1112,8 +874,19 @@
     // --- Sensitivity Table ---
     buildSensitivityTable(sharesGranted, finalTotalShares);
 
-    // --- Offer Comparison ---
-    computeComparison(sharesGranted, finalTotalShares);
+    // --- Probability Table ---
+    buildProbTable(sharesGranted, finalTotalShares);
+
+    // --- Avg Annual & Total 4-Year KPIs ---
+    const exitValuation = parseFloat(elExitValuation.value);
+    const exitPPS = exitValuation / finalTotalShares;
+    const netEquity = sharesGranted * exitPPS - sharesGranted * STRIKE_PRICE;
+    const total4yr = CASH_COMP * HORIZON + netEquity;
+    const avgAnnual = total4yr / HORIZON;
+    document.getElementById('kpiAvgAnnual').textContent = fmtDollar(avgAnnual);
+    document.getElementById('kpiAvgAnnualSub').textContent = 'Cash + equity at ' + fmtDollar(exitValuation) + ' exit';
+    document.getElementById('kpiTotal4yr').textContent = fmtDollar(total4yr);
+    document.getElementById('kpiTotal4yrSub').textContent = fmtDollar(CASH_COMP * HORIZON) + ' cash + ' + fmtDollar(netEquity) + ' equity';
   }
 
   // =====================================================
@@ -1227,94 +1000,8 @@
     table.innerHTML = html;
   }
 
-  // =====================================================
-  // OFFER COMPARISON CONSTANTS
-  // =====================================================
-  const OFFER1_CASH = 300_000;   // per year
-  const OFFER2_CASH = 500_000;   // per year
-  const OFFER2_EQUITY_BASE = 4_500_000; // net equity value at vest
-  const DISCOUNT_RATE = 0.10;
-  const HORIZON = 4; // years
-
-  function pvFactor(year) {
-    return 1 / Math.pow(1 + DISCOUNT_RATE, year);
-  }
-
-  // =====================================================
-  // OFFER COMPARISON COMPUTATION
-  // =====================================================
-  function computeComparison(sharesGranted, finalTotalShares) {
-    const exitValuation = parseFloat(elExitValuation.value);
-
-    // --- Offer 1 equity at selected exit ---
-    const o1ExitPPS = exitValuation / finalTotalShares;
-    const o1GrossEquity = sharesGranted * o1ExitPPS;
-    const o1StrikeCost = sharesGranted * STRIKE_PRICE;
-    const o1NetEquity = o1GrossEquity - o1StrikeCost;
-
-    // Comparable scenarios: $3B and $6B exits
-    const o1At3B_pps = 3e9 / finalTotalShares;
-    const o1At3B_net = sharesGranted * o1At3B_pps - o1StrikeCost;
-    const o1At3B_total = OFFER1_CASH * HORIZON + o1At3B_net;
-    document.getElementById('cmpO1EqAt3B').textContent = fmtDollar(o1At3B_net / HORIZON) + ' / yr';
-    document.getElementById('cmpO1AvgAt3B').textContent = fmtDollar(o1At3B_total / HORIZON) + ' / yr';
-
-    const o1At6B_pps = 6e9 / finalTotalShares;
-    const o1At6B_net = sharesGranted * o1At6B_pps - o1StrikeCost;
-    const o1At6B_total = OFFER1_CASH * HORIZON + o1At6B_net;
-    document.getElementById('cmpO1EqAt6B').textContent = fmtDollar(o1At6B_net / HORIZON) + ' / yr';
-    document.getElementById('cmpO1AvgAt6B').textContent = fmtDollar(o1At6B_total / HORIZON) + ' / yr';
-
-    // --- PV calculations ---
-    // Cash PV: each year's salary discounted
-    let o1CashPV = 0, o2CashPV = 0;
-    for (let y = 1; y <= HORIZON; y++) {
-      o1CashPV += OFFER1_CASH * pvFactor(y);
-      o2CashPV += OFFER2_CASH * pvFactor(y);
-    }
-
-    // Equity PV: assumed liquidity at Year 4
-    const equityPVFactor = pvFactor(HORIZON);
-
-    const o2EquityPV_2x = OFFER2_EQUITY_BASE * 2 * equityPVFactor;
-    const o2EquityPV_3x = OFFER2_EQUITY_BASE * 3 * equityPVFactor;
-
-    const o2TotalPV_2x = o2CashPV + o2EquityPV_2x;
-    const o2TotalPV_3x = o2CashPV + o2EquityPV_3x;
-
-    // --- Breakeven exit valuations ---
-    // Offer 1 total PV = o1CashPV + (shares * exitVal/finalShares - strikeCost) * pvFactor(4)
-    // Set equal to Offer 2 total PV and solve for exitVal:
-    // o1CashPV + (shares * exitVal/finalShares - strikeCost) * pvF = o2TotalPV
-    // (shares * exitVal/finalShares) * pvF = o2TotalPV - o1CashPV + strikeCost * pvF
-    // exitVal = (o2TotalPV - o1CashPV + strikeCost * pvF) * finalShares / (shares * pvF)
-
-    function calcBreakeven(o2TotalPV) {
-      const neededEquityPV = o2TotalPV - o1CashPV;
-      // neededEquityPV = (shares * exitVal/finalShares - strikeCost) * pvF
-      // shares * exitVal/finalShares = neededEquityPV/pvF + strikeCost
-      // exitVal = (neededEquityPV/pvF + strikeCost) * finalShares / shares
-      const neededNetEquity = neededEquityPV / equityPVFactor;
-      const neededGross = neededNetEquity + o1StrikeCost;
-      const breakExit = neededGross * finalTotalShares / sharesGranted;
-      return breakExit;
-    }
-
-    const be2x = calcBreakeven(o2TotalPV_2x);
-    const be3x = calcBreakeven(o2TotalPV_3x);
-
-    document.getElementById('breakeven2x').textContent = fmtDollar(be2x);
-    document.getElementById('breakeven2xSub').textContent = (be2x / PRE_MONEY).toFixed(1) + '\u00D7 current pre-money ($1.0B)';
-
-    document.getElementById('breakeven3x').textContent = fmtDollar(be3x);
-    document.getElementById('breakeven3xSub').textContent = (be3x / PRE_MONEY).toFixed(1) + '\u00D7 current pre-money ($1.0B)';
-
-    // --- Probability Table ---
-    buildProbTable(sharesGranted, finalTotalShares);
-
-    // --- Decision Table ---
-    buildDecisionTable(sharesGranted, finalTotalShares, o1CashPV, o2CashPV, o2EquityPV_2x, o2EquityPV_3x);
-  }
+  const CASH_COMP = 300_000;     // annual cash compensation
+  const HORIZON = 4;             // years
 
   // =====================================================
   // PROBABILITY-WEIGHTED OUTCOMES
@@ -1387,70 +1074,6 @@
         compute();
       });
     });
-  }
-
-  // =====================================================
-  // DECISION TABLE &mdash; OFFER 1 vs OFFER 2 BY EXIT VALUATION
-  // =====================================================
-  function buildDecisionTable(sharesGranted, finalTotalShares, o1CashPV, o2CashPV, o2EqPV2x, o2EqPV3x) {
-    const table = document.getElementById('decisionTable');
-    const exitValues = [];
-    for (let e = 1e9; e <= 10e9; e += 1e9) exitValues.push(e);
-
-    const { weightedEV } = getWeightedEV();
-
-    // Find nearest exit value row to weighted EV
-    let closestEV = exitValues[0];
-    let closestDist = Math.abs(weightedEV - closestEV);
-    exitValues.forEach(ev => {
-      const dist = Math.abs(weightedEV - ev);
-      if (dist < closestDist) { closestDist = dist; closestEV = ev; }
-    });
-
-    const equityPVF = pvFactor(HORIZON);
-
-    // Offer 2 avg annual: total nominal / 4
-    const o2AvgAnnual2x = (OFFER2_CASH * HORIZON + OFFER2_EQUITY_BASE * 2) / HORIZON;
-    const o2AvgAnnual3x = (OFFER2_CASH * HORIZON + OFFER2_EQUITY_BASE * 3) / HORIZON;
-
-    let html = `<thead><tr>
-      <th style="text-align:left;border-right:2px solid var(--border);">Exit Valuation</th>
-      <th style="color:var(--accent-light);">Startup<br>Avg Annual</th>
-      <th>Startup Equity<br>(Annualized)</th>
-      <th>vs. PE CFO<br>(2&times; Min: ${fmtDollar(o2AvgAnnual2x)}/yr)</th>
-      <th>vs. PE CFO<br>(3&times; Base: ${fmtDollar(o2AvgAnnual3x)}/yr)</th>
-      <th>Favorable</th>
-    </tr></thead><tbody>`;
-
-    exitValues.forEach(ev => {
-      const isWeighted = ev === closestEV;
-      const pps = ev / finalTotalShares;
-      const netEquity = sharesGranted * pps - sharesGranted * STRIKE_PRICE;
-
-      // Avg annual: (cash*4 + equity) / 4
-      const o1AvgAnnual = (OFFER1_CASH * HORIZON + netEquity) / HORIZON;
-      const equityAnnualized = netEquity / HORIZON;
-
-      const diff2x = o1AvgAnnual - o2AvgAnnual2x;
-      const diff3x = o1AvgAnnual - o2AvgAnnual3x;
-
-      let winner, winnerCls;
-      if (diff3x >= 0) { winner = 'Startup \u2713\u2713'; winnerCls = 'winner-1'; }
-      else if (diff2x >= 0) { winner = 'Startup \u2713'; winnerCls = 'winner-1'; }
-      else { winner = 'PE CFO'; winnerCls = 'winner-2'; }
-
-      html += `<tr class="${isWeighted ? 'highlight-row' : ''}">
-        <td>${fmtDollar(ev)}${isWeighted ? ' <span style="font-size:9px;color:var(--accent-light);">&laquo; WEIGHTED EV</span>' : ''}</td>
-        <td style="color:var(--accent-light);font-weight:600;">${fmtDollar(o1AvgAnnual)}</td>
-        <td>${fmtDollar(equityAnnualized)}</td>
-        <td class="${diff2x >= 0 ? 'pv-positive' : 'pv-negative'}">${diff2x >= 0 ? '+' : ''}${fmtDollar(diff2x)}</td>
-        <td class="${diff3x >= 0 ? 'pv-positive' : 'pv-negative'}">${diff3x >= 0 ? '+' : ''}${fmtDollar(diff3x)}</td>
-        <td><span class="winner-tag ${winnerCls}">${winner}</span></td>
-      </tr>`;
-    });
-
-    html += '</tbody>';
-    table.innerHTML = html;
   }
 
   // =====================================================
