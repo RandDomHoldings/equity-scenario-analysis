@@ -360,111 +360,6 @@
     transition: width 0.3s;
   }
 
-  /* Probability Table */
-  .prob-table {
-    font-size: 12px;
-  }
-
-  .prob-table thead th {
-    padding: 8px 10px;
-    font-size: 11px;
-  }
-
-  .prob-table tbody td {
-    padding: 6px 10px;
-  }
-
-  .prob-table select.prob-input {
-    width: 72px;
-    text-align: right;
-    padding: 5px 6px;
-    font-size: 12px;
-    font-variant-numeric: tabular-nums;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--green);
-    border-radius: 6px;
-    font-weight: 600;
-  }
-
-  .prob-table select.prob-input:focus {
-    border-color: var(--accent);
-    outline: none;
-  }
-
-  .prob-table tfoot td {
-    font-weight: 700;
-    border-top: 2px solid var(--border);
-    padding: 8px 10px;
-  }
-
-  .prob-total-ok { color: var(--green); }
-  .prob-total-err { color: var(--red); }
-
-
-  /* Probability + Sensitivity Side-by-Side Layout */
-  .prob-sens-layout {
-    display: flex;
-    gap: 20px;
-    align-items: stretch;
-    margin-top: 32px;
-  }
-
-  .prob-sens-panel {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .prob-sens-panel:first-child {
-    flex: 0 0 340px;
-    min-width: 0;
-  }
-
-  .prob-sens-panel:last-child {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .prob-sens-panel .panel-title {
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 4px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .prob-sens-panel .panel-sub {
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-bottom: 14px;
-    line-height: 1.4;
-  }
-
-  .prob-sens-panel .table-wrapper {
-    border: none;
-    background: transparent;
-    border-radius: 0;
-  }
-
-  .prob-sens-panel .table-wrapper table thead th {
-    background: var(--bg);
-  }
-
-
-
-  @media (max-width: 1100px) {
-    .prob-sens-layout { flex-direction: column; }
-    .prob-sens-panel:first-child {
-      flex: none;
-      width: 100%;
-    }
-  }
-
   @media (max-width: 900px) {
     .grid-2, .grid-3 { grid-template-columns: 1fr; }
     .kpi-grid { grid-template-columns: repeat(3, 1fr); }
@@ -578,22 +473,13 @@
         </select>
       </div>
       <div class="field">
-        <label>Dilution Severity <span class="carta-ref">Carta 50th pct (median)</span></label>
-        <div class="field-row">
-          <span class="value">Mid (50th pct)</span>
-        </div>
-      </div>
-      <div class="field">
-        <label>Exit Valuation</label>
-        <select id="exitValuation">
-          <option value="1e9">$1B</option>
-          <option value="2e9">$2B</option>
-          <option value="3e9" selected>$3B</option>
-          <option value="5e9">$5B</option>
-          <option value="7e9">$7B</option>
-          <option value="10e9">$10B</option>
-          <option value="15e9">$15B</option>
-          <option value="20e9">$20B</option>
+        <label>Dilution Severity (Series C &amp; D)
+          <span class="carta-ref">Carta deep tech data</span>
+        </label>
+        <select id="severitySelect">
+          <option value="low">Low (25th pct)</option>
+          <option value="mid">Mid (50th pct)</option>
+          <option value="high" selected>High (75th pct)</option>
         </select>
       </div>
       <div class="field">
@@ -623,12 +509,12 @@
       <div class="sub" id="kpiOwnershipSub">&mdash;</div>
     </div>
     <div class="kpi">
-      <div class="label">Avg Annual Comp</div>
-      <div class="number positive" id="kpiAvgAnnual">&mdash;</div>
-      <div class="sub" id="kpiAvgAnnualSub">Cash + equity / 4 years</div>
+      <div class="label">4-Year Equity Value (at 3&times;)</div>
+      <div class="number positive" id="kpiEquity4yr">&mdash;</div>
+      <div class="sub" id="kpiEquity4yrSub">Net equity at $3B exit</div>
     </div>
     <div class="kpi">
-      <div class="label">Total 4-Year Comp</div>
+      <div class="label">Total 4-Year Comp (at 3&times;)</div>
       <div class="number positive" id="kpiTotal4yr">&mdash;</div>
       <div class="sub" id="kpiTotal4yrSub">Cash + net equity value</div>
     </div>
@@ -646,29 +532,18 @@
     <div class="dilution-detail" id="dilutionDetail"></div>
   </div>
 
-  <!-- Probability-Weighted Outcomes + Sensitivity Table -->
-  <div class="prob-sens-layout">
-    <div class="prob-sens-panel">
-      <div class="panel-title">Probability-Weighted Outcomes <span class="badge">Expected Value</span></div>
-      <p class="panel-sub">Assign probability weights to exit scenarios. Weighted EV drives the highlighted column &rarr;</p>
-      <div class="table-wrapper">
-        <table id="probTable" class="prob-table"></table>
-      </div>
-    </div>
-    <div class="prob-sens-panel">
-      <div class="panel-title">Net Equity Value Post-Dilution <span class="badge">110K Shares</span></div>
-      <p class="panel-sub">(110K &times; exit valuation &divide; fully diluted shares &minus; strike cost)</p>
-      <div class="table-wrapper">
-        <table id="sensitivityTable"></table>
-      </div>
-    </div>
+  <!-- Net Equity Value Table -->
+  <div class="section-title">Net Equity Value Over 4-Year Vest <span class="badge">110K Shares</span></div>
+  <p style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">(110K &times; exit valuation &divide; fully diluted shares &minus; strike cost) across exit scenarios up to $20B</p>
+  <div class="table-wrapper">
+    <table id="sensitivityTable"></table>
   </div>
 
   <!-- Equity Value Chart -->
   <div class="section-title">Equity Value by Exit &amp; Dilution <span class="badge">Visual</span></div>
   <div class="card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-      <span style="font-size:12px;color:var(--text-muted);">Annualized net equity value (110K shares) across exit valuations and dilution severity</span>
+      <span style="font-size:12px;color:var(--text-muted);">Total 4-year net equity value (110K shares) across exit valuations and dilution severity</span>
     </div>
     <canvas id="equityChart" width="900" height="340" style="width:100%;height:auto;"></canvas>
     <div style="display:flex;gap:20px;justify-content:center;margin-top:12px;">
@@ -747,9 +622,7 @@
   const SHARES_GRANTED = 110_000;
   const elSeriesBDilution = document.getElementById('seriesBDilution');
   const elFutureRounds = document.getElementById('futureRounds');
-  const elExitValuation = document.getElementById('exitValuation');
-
-  const severity = 'mid';
+  const elSeverity = document.getElementById('severitySelect');
 
   // =====================================================
   // CORE COMPUTATION
@@ -757,6 +630,7 @@
   function getDilutionSchedule() {
     const seriesBDilution = parseFloat(elSeriesBDilution.value);
     const futureRounds = parseInt(elFutureRounds.value);
+    const severity = elSeverity.value;
 
     // Build round-by-round schedule
     // Each entry: { name, dilutionPct, newSharesIssued, totalSharesAfter }
@@ -837,19 +711,15 @@
     // --- Sensitivity Table ---
     buildSensitivityTable(sharesGranted, finalTotalShares);
 
-    // --- Probability Table ---
-    buildProbTable(sharesGranted, finalTotalShares);
-
-    // --- Avg Annual & Total 4-Year KPIs ---
-    const exitValuation = parseFloat(elExitValuation.value);
-    const exitPPS = exitValuation / finalTotalShares;
-    const netEquity = sharesGranted * exitPPS - sharesGranted * STRIKE_PRICE;
-    const total4yr = CASH_COMP * HORIZON + netEquity;
-    const avgAnnual = total4yr / HORIZON;
-    document.getElementById('kpiAvgAnnual').textContent = fmtDollar(avgAnnual);
-    document.getElementById('kpiAvgAnnualSub').textContent = 'Cash + equity at ' + fmtDollar(exitValuation) + ' exit';
-    document.getElementById('kpiTotal4yr').textContent = fmtDollar(total4yr);
-    document.getElementById('kpiTotal4yrSub').textContent = fmtDollar(CASH_COMP * HORIZON) + ' cash + ' + fmtDollar(netEquity) + ' equity';
+    // --- 4-Year Vest KPIs (at $3B base case) ---
+    const baseExitEV = 3e9;
+    const basePPS = baseExitEV / finalTotalShares;
+    const baseNetEquity = sharesGranted * basePPS - sharesGranted * STRIKE_PRICE;
+    const baseTotal4yr = CASH_COMP * HORIZON + baseNetEquity;
+    document.getElementById('kpiTotal4yr').textContent = fmtDollar(baseTotal4yr);
+    document.getElementById('kpiTotal4yrSub').textContent = fmtDollar(CASH_COMP * HORIZON) + ' cash + ' + fmtDollar(baseNetEquity) + ' equity';
+    document.getElementById('kpiEquity4yr').textContent = fmtDollar(baseNetEquity);
+    document.getElementById('kpiEquity4yrSub').textContent = 'Net of $' + fmt(sharesGranted * STRIKE_PRICE) + ' strike cost';
 
     // --- Equity Chart ---
     buildEquityChart();
@@ -881,18 +751,22 @@
     });
 
     const maxPct = stages[0].ownership;
-    const colors = ['#6c5ce7', '#a29bfe', '#74b9ff', '#81ecec', '#55efc4'];
 
     stages.forEach((s, i) => {
       const group = document.createElement('div');
       group.className = 'waterfall-bar-group';
 
-      const heightPct = (s.ownership / maxPct) * 100;
-      const color = colors[i % colors.length];
+      const remainPct = (s.ownership / maxPct) * 100;
+      const lostPct = 100 - remainPct;
+      const isBaseline = i === 0;
+      const barColor = isBaseline ? '#6c5ce7' : (remainPct < 70 ? '#e17055' : '#a29bfe');
 
       group.innerHTML = `
-        <span class="tip" style="color:${color}">${fmtPct(s.ownership, 4)}</span>
-        <div class="waterfall-bar" style="height:${heightPct}%;background:${color};"></div>
+        <span class="tip" style="color:${isBaseline ? '#6c5ce7' : (lostPct > 30 ? 'var(--red)' : 'var(--accent-light)')}">${fmtPct(s.ownership, 4)}</span>
+        <div style="width:100%;height:100%;display:flex;flex-direction:column;justify-content:flex-end;">
+          ${!isBaseline ? `<div style="flex:0 0 ${lostPct}%;background:rgba(225,112,85,0.15);border-radius:4px 4px 0 0;border-bottom:2px dashed rgba(225,112,85,0.4);"></div>` : ''}
+          <div class="waterfall-bar" style="height:${remainPct}%;background:${barColor};"></div>
+        </div>
         <span class="bar-label">${s.label}</span>
         ${s.dilution > 0 ? `<span class="dilution-label">-${fmtPct(s.dilution, 1)}</span>` : '<span class="dilution-label" style="color:var(--green);">Baseline</span>'}
       `;
@@ -924,47 +798,36 @@
   function buildSensitivityTable(sharesGranted, finalTotalShares) {
     const table = document.getElementById('sensitivityTable');
 
-    const exitValues = [];
-    for (let e = 1e9; e <= 10e9; e += 1e9) exitValues.push(e);
-
-    // Use weighted EV from probability table to determine highlighted column
-    const { weightedEV } = getWeightedEV();
-    let closestExitCol = exitValues[0];
-    let closestDist = Math.abs(weightedEV - closestExitCol);
-    exitValues.forEach(ev => {
-      const dist = Math.abs(weightedEV - ev);
-      if (dist < closestDist) { closestDist = dist; closestExitCol = ev; }
-    });
+    const exitValues = [1e9, 2e9, 3e9, 5e9, 7e9, 10e9, 15e9, 20e9];
 
     let html = '<thead><tr><th style="text-align:left;border-right:2px solid var(--border);">Exit Valuation</th>';
     exitValues.forEach(ev => {
-      const isSelectedCol = ev === closestExitCol;
-      html += `<th${isSelectedCol ? ' style="color:var(--accent-light);"' : ''}>${fmtDollar(ev)}</th>`;
+      const is3B = ev === 3e9;
+      html += `<th${is3B ? ' style="color:var(--accent-light);"' : ''}>${fmtDollar(ev)}${is3B ? ' (3&times;)' : ''}</th>`;
     });
     html += '</tr></thead><tbody>';
 
-    // Annualized equity row
-    html += '<tr><td>Annualized Equity</td>';
+    // 4-year net equity row
+    html += '<tr><td>4-Year Net Equity</td>';
     exitValues.forEach(ev => {
       const pps = ev / finalTotalShares;
       const net = sharesGranted * pps - sharesGranted * STRIKE_PRICE;
-      const annualized = net / HORIZON;
-      const isHighlight = ev === closestExitCol;
-      const cls = isHighlight ? 'highlight-cell' : '';
-      const colorCls = annualized < 0 ? 'negative' : '';
-      html += `<td class="${cls} ${colorCls}">${fmtDollar(annualized)}</td>`;
+      const is3B = ev === 3e9;
+      const cls = is3B ? 'highlight-cell' : '';
+      const colorCls = net < 0 ? 'negative' : '';
+      html += `<td class="${cls} ${colorCls}">${fmtDollar(net)}</td>`;
     });
     html += '</tr>';
 
-    // Total 4-year row
-    html += '<tr><td>Total 4-Year Equity</td>';
+    // Total 4-year comp row (cash + equity)
+    html += '<tr><td>4-Year Total Comp</td>';
     exitValues.forEach(ev => {
       const pps = ev / finalTotalShares;
       const net = sharesGranted * pps - sharesGranted * STRIKE_PRICE;
-      const isHighlight = ev === closestExitCol;
-      const cls = isHighlight ? 'highlight-cell' : '';
-      const colorCls = net < 0 ? 'negative' : '';
-      html += `<td class="${cls} ${colorCls}">${fmtDollar(net)}</td>`;
+      const total = CASH_COMP * HORIZON + net;
+      const is3B = ev === 3e9;
+      const cls = is3B ? 'highlight-cell' : '';
+      html += `<td class="${cls}">${fmtDollar(total)}</td>`;
     });
     html += '</tr>';
 
@@ -974,79 +837,6 @@
 
   const CASH_COMP = 300_000;     // annual cash compensation
   const HORIZON = 4;             // years
-
-  // =====================================================
-  // PROBABILITY-WEIGHTED OUTCOMES
-  // =====================================================
-  // Default scenarios matching user's spreadsheet
-  const PROB_SCENARIOS = [
-    { ev: 0,    prob: 10 },
-    { ev: 1e9,  prob: 20 },
-    { ev: 3e9,  prob: 50 },
-    { ev: 10e9, prob: 15 },
-    { ev: 25e9, prob: 5 },
-  ];
-
-  function getWeightedEV() {
-    let totalProb = 0, weightedSum = 0;
-    PROB_SCENARIOS.forEach(s => {
-      totalProb += s.prob;
-      weightedSum += s.ev * (s.prob / 100);
-    });
-    return { weightedEV: weightedSum, totalProb };
-  }
-
-  function buildProbTable(sharesGranted, finalTotalShares) {
-    const table = document.getElementById('probTable');
-    const { weightedEV, totalProb } = getWeightedEV();
-    const probOk = Math.abs(totalProb - 100) < 0.01;
-
-    let html = `<thead><tr>
-      <th style="text-align:left;border-right:2px solid var(--border);">EV Scenario</th>
-      <th>Probability</th>
-      <th>Expected Value</th>
-    </tr></thead><tbody>`;
-
-    PROB_SCENARIOS.forEach((s, i) => {
-      const expectedVal = s.ev * (s.prob / 100);
-
-      // Build dropdown options in 5% increments (0-100)
-      let options = '';
-      for (let p = 0; p <= 100; p += 5) {
-        options += `<option value="${p}"${p === s.prob ? ' selected' : ''}>${p}%</option>`;
-      }
-
-      html += `<tr>
-        <td>${fmtDollar(s.ev)}</td>
-        <td style="text-align:center;">
-          <select data-prob-idx="${i}" class="prob-input">
-            ${options}
-          </select>
-        </td>
-        <td>${fmtDollar(expectedVal)}</td>
-      </tr>`;
-    });
-
-    // Totals row with weighted EV and multiple
-    const totalCls = probOk ? 'prob-total-ok' : 'prob-total-err';
-    const evMultiple = (weightedEV / PRE_MONEY).toFixed(1) + '\u00D7';
-    html += `</tbody><tfoot><tr>
-      <td><strong>Weighted EV</strong></td>
-      <td style="text-align:center;" class="${totalCls}"><strong>${totalProb.toFixed(0)}%</strong>${!probOk ? ' <span style="font-size:10px;">(must = 100%)</span>' : ''}</td>
-      <td><strong>${fmtDollar(weightedEV)}</strong> <span style="color:var(--accent-light);font-size:11px;">(${evMultiple})</span></td>
-    </tr></tfoot>`;
-
-    table.innerHTML = html;
-
-    // Bind select listeners
-    table.querySelectorAll('.prob-input').forEach(sel => {
-      sel.addEventListener('change', (e) => {
-        const idx = parseInt(e.target.dataset.probIdx);
-        PROB_SCENARIOS[idx].prob = parseFloat(e.target.value) || 0;
-        compute();
-      });
-    });
-  }
 
   // =====================================================
   // EQUITY VALUE CHART
@@ -1071,8 +861,7 @@
     const cW = W - pad.left - pad.right;
     const cH = H - pad.top - pad.bottom;
 
-    const exitValues = [];
-    for (let e = 1e9; e <= 10e9; e += 1e9) exitValues.push(e);
+    const exitValues = [1e9, 2e9, 3e9, 5e9, 7e9, 10e9, 15e9, 20e9];
 
     const seriesBDilution = parseFloat(elSeriesBDilution.value);
     const futureRounds = parseInt(elFutureRounds.value);
@@ -1098,7 +887,7 @@
       const totalShares = calcTotalShares(s.key);
       return exitValues.map(ev => {
         const net = SHARES_GRANTED * (ev / totalShares) - SHARES_GRANTED * STRIKE_PRICE;
-        return net / HORIZON;
+        return net;
       });
     });
 
@@ -1192,8 +981,8 @@
       });
     });
 
-    // Highlight selected exit valuation
-    const selectedExit = parseFloat(elExitValuation.value);
+    // Highlight $3B base case exit
+    const selectedExit = 3e9;
     const selectedIdx = exitValues.indexOf(selectedExit);
     if (selectedIdx >= 0) {
       const x = xPos(selectedIdx);
@@ -1211,7 +1000,7 @@
   // =====================================================
   // EVENT LISTENERS
   // =====================================================
-  [elSeriesBDilution, elFutureRounds, elExitValuation].forEach(el => {
+  [elSeriesBDilution, elFutureRounds, elSeverity].forEach(el => {
     el.addEventListener('change', compute);
     el.addEventListener('input', compute);
   });
