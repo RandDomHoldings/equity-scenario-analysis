@@ -1009,21 +1009,6 @@
       });
     });
 
-    // Highlight $5B base case exit
-    const selectedExit = 5e9;
-    const selectedIdx = exitValues.indexOf(selectedExit);
-    if (selectedIdx >= 0) {
-      const x = xPos(selectedIdx);
-      ctx.strokeStyle = '#a29bfe';
-      ctx.lineWidth = 1;
-      ctx.setLineDash([3, 3]);
-      ctx.beginPath();
-      ctx.moveTo(x, pad.top);
-      ctx.lineTo(x, pad.top + cH);
-      ctx.stroke();
-      ctx.setLineDash([]);
-    }
-
     // Draw hover crosshair and tooltip for mid line
     if (hoveredIdx >= 0 && hoveredIdx < exitValues.length) {
       const x = xPos(hoveredIdx);
