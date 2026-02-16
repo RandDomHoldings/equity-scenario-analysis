@@ -509,12 +509,12 @@
       <div class="sub" id="kpiOwnershipSub">&mdash;</div>
     </div>
     <div class="kpi">
-      <div class="label">4-Year Equity Value (at 3&times;)</div>
+      <div class="label">4-Year Equity Value (at 5&times;)</div>
       <div class="number positive" id="kpiEquity4yr">&mdash;</div>
-      <div class="sub" id="kpiEquity4yrSub">Net equity at $3B exit</div>
+      <div class="sub" id="kpiEquity4yrSub">Net equity at $5B exit</div>
     </div>
     <div class="kpi">
-      <div class="label">Total 4-Year Comp (at 3&times;)</div>
+      <div class="label">Total 4-Year Comp (at 5&times;)</div>
       <div class="number positive" id="kpiTotal4yr">&mdash;</div>
       <div class="sub" id="kpiTotal4yrSub">Cash + net equity value</div>
     </div>
@@ -711,8 +711,8 @@
     // --- Sensitivity Table ---
     buildSensitivityTable(sharesGranted, finalTotalShares);
 
-    // --- 4-Year Vest KPIs (at $3B base case) ---
-    const baseExitEV = 3e9;
+    // --- 4-Year Vest KPIs (at $5B base case) ---
+    const baseExitEV = 5e9;
     const basePPS = baseExitEV / finalTotalShares;
     const baseNetEquity = sharesGranted * basePPS - sharesGranted * STRIKE_PRICE;
     const baseTotal4yr = CASH_COMP * HORIZON + baseNetEquity;
@@ -752,6 +752,14 @@
 
     const maxPct = stages[0].ownership;
 
+    // Distinct color per round stage
+    const stageColors = [
+      { bar: '#6c5ce7', tip: '#6c5ce7', lost: 'rgba(108,92,231,0.15)', lostBorder: 'rgba(108,92,231,0.4)' },   // At Grant (purple)
+      { bar: '#00b894', tip: '#00b894', lost: 'rgba(0,184,148,0.15)', lostBorder: 'rgba(0,184,148,0.4)' },       // Series B (teal)
+      { bar: '#fdcb6e', tip: '#fdcb6e', lost: 'rgba(253,203,110,0.15)', lostBorder: 'rgba(253,203,110,0.4)' },   // Series C (amber)
+      { bar: '#e17055', tip: '#e17055', lost: 'rgba(225,112,85,0.15)', lostBorder: 'rgba(225,112,85,0.4)' },       // Series D (coral)
+    ];
+
     stages.forEach((s, i) => {
       const group = document.createElement('div');
       group.className = 'waterfall-bar-group';
@@ -759,16 +767,16 @@
       const remainPct = (s.ownership / maxPct) * 100;
       const lostPct = 100 - remainPct;
       const isBaseline = i === 0;
-      const barColor = isBaseline ? '#6c5ce7' : (remainPct < 70 ? '#e17055' : '#a29bfe');
+      const sc = stageColors[i] || stageColors[stageColors.length - 1];
 
       group.innerHTML = `
-        <span class="tip" style="color:${isBaseline ? '#6c5ce7' : (lostPct > 30 ? 'var(--red)' : 'var(--accent-light)')}">${fmtPct(s.ownership, 4)}</span>
+        <span class="tip" style="color:${sc.tip}">${fmtPct(s.ownership, 4)}</span>
         <div style="width:100%;height:100%;display:flex;flex-direction:column;justify-content:flex-end;">
-          ${!isBaseline ? `<div style="flex:0 0 ${lostPct}%;background:rgba(225,112,85,0.15);border-radius:4px 4px 0 0;border-bottom:2px dashed rgba(225,112,85,0.4);"></div>` : ''}
-          <div class="waterfall-bar" style="height:${remainPct}%;background:${barColor};"></div>
+          ${!isBaseline ? `<div style="flex:0 0 ${lostPct}%;background:${sc.lost};border-radius:4px 4px 0 0;border-bottom:2px dashed ${sc.lostBorder};"></div>` : ''}
+          <div class="waterfall-bar" style="height:${remainPct}%;background:${sc.bar};"></div>
         </div>
         <span class="bar-label">${s.label}</span>
-        ${s.dilution > 0 ? `<span class="dilution-label">-${fmtPct(s.dilution, 1)}</span>` : '<span class="dilution-label" style="color:var(--green);">Baseline</span>'}
+        ${s.dilution > 0 ? `<span class="dilution-label" style="color:${sc.tip};">-${fmtPct(s.dilution, 1)}</span>` : '<span class="dilution-label" style="color:var(--green);">Baseline</span>'}
       `;
       container.appendChild(group);
     });
@@ -802,8 +810,8 @@
 
     let html = '<thead><tr><th style="text-align:left;border-right:2px solid var(--border);">Exit Valuation</th>';
     exitValues.forEach(ev => {
-      const is3B = ev === 3e9;
-      html += `<th${is3B ? ' style="color:var(--accent-light);"' : ''}>${fmtDollar(ev)}${is3B ? ' (3&times;)' : ''}</th>`;
+      const is5B = ev === 5e9;
+      html += `<th${is5B ? ' style="color:var(--accent-light);"' : ''}>${fmtDollar(ev)}${is5B ? ' (5&times;)' : ''}</th>`;
     });
     html += '</tr></thead><tbody>';
 
@@ -812,8 +820,8 @@
     exitValues.forEach(ev => {
       const pps = ev / finalTotalShares;
       const net = sharesGranted * pps - sharesGranted * STRIKE_PRICE;
-      const is3B = ev === 3e9;
-      const cls = is3B ? 'highlight-cell' : '';
+      const is5B = ev === 5e9;
+      const cls = is5B ? 'highlight-cell' : '';
       const colorCls = net < 0 ? 'negative' : '';
       html += `<td class="${cls} ${colorCls}">${fmtDollar(net)}</td>`;
     });
@@ -825,8 +833,8 @@
       const pps = ev / finalTotalShares;
       const net = sharesGranted * pps - sharesGranted * STRIKE_PRICE;
       const total = CASH_COMP * HORIZON + net;
-      const is3B = ev === 3e9;
-      const cls = is3B ? 'highlight-cell' : '';
+      const is5B = ev === 5e9;
+      const cls = is5B ? 'highlight-cell' : '';
       html += `<td class="${cls}">${fmtDollar(total)}</td>`;
     });
     html += '</tr>';
@@ -839,8 +847,11 @@
   const HORIZON = 4;             // years
 
   // =====================================================
-  // EQUITY VALUE CHART
+  // EQUITY VALUE CHART (interactive)
   // =====================================================
+  // Store chart state for mouse interaction
+  let chartState = null;
+
   function buildEquityChart() {
     const canvas = document.getElementById('equityChart');
     const ctx = canvas.getContext('2d');
@@ -853,8 +864,6 @@
     ctx.scale(dpr, dpr);
     const W = rect.width;
     const H = rect.height;
-
-    ctx.clearRect(0, 0, W, H);
 
     // Chart config
     const pad = { top: 20, right: 20, bottom: 40, left: 70 };
@@ -898,6 +907,18 @@
 
     function xPos(i) { return pad.left + (i / (exitValues.length - 1)) * cW; }
     function yPos(v) { return pad.top + cH - ((v - yMin) / (yMax - yMin)) * cH; }
+
+    // Store chart state for hover interaction
+    chartState = { canvas, ctx, dpr, W, H, pad, cW, cH, exitValues, scenarios, allData, yMin, yMax, xPos, yPos, hoveredIdx: -1 };
+
+    drawChart();
+  }
+
+  function drawChart(hoveredIdx) {
+    if (!chartState) return;
+    const { ctx, W, H, pad, cW, cH, exitValues, scenarios, allData, yMin, yMax, xPos, yPos } = chartState;
+
+    ctx.clearRect(0, 0, W, H);
 
     // Grid lines
     ctx.strokeStyle = '#2e3142';
@@ -974,15 +995,22 @@
 
       // Dots
       data.forEach((v, i) => {
+        const isHovered = (hoveredIdx >= 0 && hoveredIdx === i);
+        const r = (si === 1 && isHovered) ? 6 : 3;
         ctx.beginPath();
-        ctx.arc(xPos(i), yPos(v), 3, 0, Math.PI * 2);
+        ctx.arc(xPos(i), yPos(v), r, 0, Math.PI * 2);
         ctx.fillStyle = color;
         ctx.fill();
+        if (si === 1 && isHovered) {
+          ctx.strokeStyle = '#fff';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        }
       });
     });
 
-    // Highlight $3B base case exit
-    const selectedExit = 3e9;
+    // Highlight $5B base case exit
+    const selectedExit = 5e9;
     const selectedIdx = exitValues.indexOf(selectedExit);
     if (selectedIdx >= 0) {
       const x = xPos(selectedIdx);
@@ -995,7 +1023,107 @@
       ctx.stroke();
       ctx.setLineDash([]);
     }
+
+    // Draw hover crosshair and tooltip for mid line
+    if (hoveredIdx >= 0 && hoveredIdx < exitValues.length) {
+      const x = xPos(hoveredIdx);
+
+      // Vertical hover line
+      ctx.strokeStyle = 'rgba(162,155,254,0.5)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([2, 2]);
+      ctx.beginPath();
+      ctx.moveTo(x, pad.top);
+      ctx.lineTo(x, pad.top + cH);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Tooltip showing all 3 scenario values
+      const midVal = allData[1][hoveredIdx];
+      const lowVal = allData[0][hoveredIdx];
+      const highVal = allData[2][hoveredIdx];
+      const exitLabel = fmtDollar(exitValues[hoveredIdx]);
+
+      // Format to $X.XM
+      function fmtM(v) {
+        const sign = v < 0 ? '-' : '';
+        return sign + '$' + (Math.abs(v) / 1e6).toFixed(1) + 'M';
+      }
+
+      const lines = [
+        exitLabel + ' Exit',
+        '\u25CF Low:  ' + fmtM(lowVal),
+        '\u25CF Mid:  ' + fmtM(midVal),
+        '\u25CF High: ' + fmtM(highVal),
+      ];
+
+      ctx.font = 'bold 12px -apple-system, BlinkMacSystemFont, sans-serif';
+      const lineH = 18;
+      const tooltipPad = 10;
+      const maxTextW = Math.max(...lines.map(l => ctx.measureText(l).width));
+      const tooltipW = maxTextW + tooltipPad * 2;
+      const tooltipH = lines.length * lineH + tooltipPad * 2;
+
+      // Position: prefer right of point, flip if near edge
+      let tx = x + 12;
+      if (tx + tooltipW > W - pad.right) tx = x - tooltipW - 12;
+      let ty = yPos(midVal) - tooltipH / 2;
+      ty = Math.max(pad.top, Math.min(ty, pad.top + cH - tooltipH));
+
+      // Background
+      ctx.fillStyle = 'rgba(26,29,39,0.95)';
+      ctx.strokeStyle = 'rgba(162,155,254,0.6)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.roundRect(tx, ty, tooltipW, tooltipH, 6);
+      ctx.fill();
+      ctx.stroke();
+
+      // Text
+      const lineColors = ['#e2e4eb', '#00b894', '#a29bfe', '#e17055'];
+      lines.forEach((line, li) => {
+        ctx.fillStyle = lineColors[li];
+        ctx.font = li === 0 ? 'bold 12px -apple-system, BlinkMacSystemFont, sans-serif' : '12px -apple-system, BlinkMacSystemFont, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText(line, tx + tooltipPad, ty + tooltipPad + li * lineH);
+      });
+    }
   }
+
+  // Mouse interaction for chart
+  (function() {
+    const canvas = document.getElementById('equityChart');
+    canvas.style.cursor = 'crosshair';
+
+    canvas.addEventListener('mousemove', function(e) {
+      if (!chartState) return;
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const { pad, cW, exitValues, xPos } = chartState;
+
+      // Find nearest data point index on x-axis
+      let nearest = -1;
+      let minDist = Infinity;
+      for (let i = 0; i < exitValues.length; i++) {
+        const dist = Math.abs(mx - xPos(i));
+        if (dist < minDist) { minDist = dist; nearest = i; }
+      }
+      // Only show tooltip if within 30px of a data point
+      if (minDist > 30) nearest = -1;
+
+      if (nearest !== chartState.hoveredIdx) {
+        chartState.hoveredIdx = nearest;
+        drawChart(nearest);
+      }
+    });
+
+    canvas.addEventListener('mouseleave', function() {
+      if (!chartState) return;
+      chartState.hoveredIdx = -1;
+      drawChart(-1);
+    });
+  })();
 
   // =====================================================
   // EVENT LISTENERS
